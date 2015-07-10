@@ -13,6 +13,7 @@
 		4C16F6A91B5003F4000E0F42 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4C16F6A81B5003F4000E0F42 /* Images.xcassets */; };
 		4C16F6AC1B5003F4000E0F42 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4C16F6AA1B5003F4000E0F42 /* LaunchScreen.xib */; };
 		4C16F6B81B5003F4000E0F42 /* Swift_RSAUtilsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C16F6B71B5003F4000E0F42 /* Swift_RSAUtilsTests.swift */; };
+		4C16F6C21B500C55000E0F42 /* RSAUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C16F6C11B500C55000E0F42 /* RSAUtils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,6 +37,7 @@
 		4C16F6B11B5003F4000E0F42 /* Swift-RSAUtilsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Swift-RSAUtilsTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C16F6B61B5003F4000E0F42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4C16F6B71B5003F4000E0F42 /* Swift_RSAUtilsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Swift_RSAUtilsTests.swift; sourceTree = "<group>"; };
+		4C16F6C11B500C55000E0F42 /* RSAUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RSAUtils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,12 +79,10 @@
 		4C16F69E1B5003F4000E0F42 /* Swift-RSAUtils */ = {
 			isa = PBXGroup;
 			children = (
-				4C16F6A11B5003F4000E0F42 /* AppDelegate.swift */,
-				4C16F6A31B5003F4000E0F42 /* ViewController.swift */,
 				4C16F6A51B5003F4000E0F42 /* Main.storyboard */,
-				4C16F6A81B5003F4000E0F42 /* Images.xcassets */,
-				4C16F6AA1B5003F4000E0F42 /* LaunchScreen.xib */,
+				4C16F6A31B5003F4000E0F42 /* ViewController.swift */,
 				4C16F69F1B5003F4000E0F42 /* Supporting Files */,
+				4C16F6C11B500C55000E0F42 /* RSAUtils.swift */,
 			);
 			path = "Swift-RSAUtils";
 			sourceTree = "<group>";
@@ -90,6 +90,9 @@
 		4C16F69F1B5003F4000E0F42 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				4C16F6A81B5003F4000E0F42 /* Images.xcassets */,
+				4C16F6AA1B5003F4000E0F42 /* LaunchScreen.xib */,
+				4C16F6A11B5003F4000E0F42 /* AppDelegate.swift */,
 				4C16F6A01B5003F4000E0F42 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -213,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4C16F6A41B5003F4000E0F42 /* ViewController.swift in Sources */,
+				4C16F6C21B500C55000E0F42 /* RSAUtils.swift in Sources */,
 				4C16F6A21B5003F4000E0F42 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
