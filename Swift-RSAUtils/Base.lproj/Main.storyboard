@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6204"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Swift_RSAUtils" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -15,8 +16,77 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter text to encrypt..." minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MrB-bh-RG0">
+                                <rect key="frame" x="16" y="28" width="568" height="30"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="oks-PD-WTR">
+                                <rect key="frame" x="16" y="66" width="568" height="30"/>
+                                <state key="normal" title="Encrypt">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="doEncrypt" destination="BYZ-38-t0r" eventType="touchUpInside" id="Bac-jq-T3G"/>
+                                </connections>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Encrypted with public key:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1i-nU-8xS">
+                                <rect key="frame" x="16" y="104" width="568" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Encrypted text with public key will be displayed here" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="74j-M0-YTT">
+                                <rect key="frame" x="16" y="129" width="568" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="MrB-bh-RG0" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="3ou-GP-YDb"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="4kq-7F-Ana"/>
+                            <constraint firstItem="oks-PD-WTR" firstAttribute="top" secondItem="MrB-bh-RG0" secondAttribute="bottom" constant="8" id="52P-kO-7Lp"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="6Ca-px-qB7"/>
+                            <constraint firstItem="MrB-bh-RG0" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" id="6ok-2d-pdb"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="6po-LJ-ERp"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="top" secondItem="oks-PD-WTR" secondAttribute="bottom" constant="8" id="7qi-ci-LO1"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="CDn-FJ-jgB"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="G8z-0k-1La"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="GzC-YI-64J"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="NA5-7C-kVp"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="Oev-m6-Pvv"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="top" secondItem="H1i-nU-8xS" secondAttribute="bottom" constant="8" id="Rhw-wN-iI0"/>
+                            <constraint firstItem="MrB-bh-RG0" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="ala-3s-qhc"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="top" secondItem="oks-PD-WTR" secondAttribute="bottom" constant="8" id="co2-MF-f0q"/>
+                            <constraint firstItem="oks-PD-WTR" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="fRR-c7-tP8"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="top" secondItem="H1i-nU-8xS" secondAttribute="bottom" constant="8" id="h3D-FN-hXL"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="oAS-Nc-3uG"/>
+                            <constraint firstItem="oks-PD-WTR" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="tBc-qP-9az"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="top" secondItem="oks-PD-WTR" secondAttribute="bottom" constant="8" id="v5F-az-sNi"/>
+                            <constraint firstItem="H1i-nU-8xS" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" id="vBl-if-g5a"/>
+                            <constraint firstItem="74j-M0-YTT" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailingMargin" id="vpP-vh-3Mv"/>
+                        </constraints>
+                        <variation key="default">
+                            <mask key="constraints">
+                                <exclude reference="4kq-7F-Ana"/>
+                                <exclude reference="7qi-ci-LO1"/>
+                                <exclude reference="GzC-YI-64J"/>
+                                <exclude reference="Oev-m6-Pvv"/>
+                                <exclude reference="v5F-az-sNi"/>
+                                <exclude reference="6po-LJ-ERp"/>
+                                <exclude reference="CDn-FJ-jgB"/>
+                                <exclude reference="NA5-7C-kVp"/>
+                                <exclude reference="Rhw-wN-iI0"/>
+                                <exclude reference="vpP-vh-3Mv"/>
+                            </mask>
+                        </variation>
                     </view>
+                    <connections>
+                        <outlet property="txtEncryptedTextPubKey" destination="74j-M0-YTT" id="M5d-ES-qYA"/>
+                        <outlet property="txtTextToEncrypt" destination="MrB-bh-RG0" id="Hef-hd-dds"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
