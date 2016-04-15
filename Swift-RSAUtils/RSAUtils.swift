@@ -17,6 +17,14 @@ import Foundation
 import Security
 
 public class RSAUtils: NSObject {
+    
+    // Configuration keys
+    struct Config {
+        /// Determines whether to add key hash to the keychain path when searching for a key
+        /// or when adding a key to keychain
+        static var useKeyHashes = true
+    }
+    
     // Base64 encode a block of data
     static private func base64Encode(data: NSData) -> String {
         return data.base64EncodedStringWithOptions([])
@@ -44,7 +52,7 @@ public class RSAUtils: NSObject {
                 idxEnd = decryptedDataAsArray.count
             }
             var chunkData = [UInt8](count: maxChunkSize, repeatedValue: 0)
-            for ( var i = idx; i < idxEnd; i++ ) {
+            for i in idx..<idxEnd {
                 chunkData[i-idx] = decryptedDataAsArray[i]
             }
 
@@ -80,7 +88,7 @@ public class RSAUtils: NSObject {
                 idxEnd = encryptedDataAsArray.count
             }
             var chunkData = [UInt8](count: blockSize, repeatedValue: 0)
-            for ( var i = idx; i < idxEnd; i++ ) {
+            for i in idx..<idxEnd {
                 chunkData[i-idx] = encryptedDataAsArray[i]
             }
 
@@ -103,7 +111,7 @@ public class RSAUtils: NSObject {
     static private func removePadding(data: [UInt8]) -> [UInt8] {
         var idxFirstZero = -1
         var idxNextZero = data.count
-        for ( var i = 0; i < data.count; i++ ) {
+        for i in 0..<data.count {
             if ( data[i] == 0 ) {
                 if ( idxFirstZero < 0 ) {
                     idxFirstZero = i
@@ -114,7 +122,7 @@ public class RSAUtils: NSObject {
             }
         }
         var newData = [UInt8](count: idxNextZero-idxFirstZero-1, repeatedValue: 0)
-        for ( var i = idxFirstZero+1; i < idxNextZero; i++ ) {
+        for i in idxFirstZero+1..<idxNextZero {
             newData[i-idxFirstZero-1] = data[i]
         }
         return newData
@@ -132,35 +140,40 @@ public class RSAUtils: NSObject {
         pubkey.getBytes(&keyAsArray, length: pubkey.length)
         
         var idx = 0
-        if (keyAsArray[idx++] != 0x30) {
+        if (keyAsArray[idx] != 0x30) {
             return nil
         }
+        idx += 1
+        
         if (keyAsArray[idx] > 0x80) {
             idx += Int(keyAsArray[idx]) - 0x80 + 1
         } else {
-            idx++
+            idx += 1
         }
         
         let seqiod = [UInt8](arrayLiteral: 0x30, 0x0d, 0x06, 0x09, 0x2a, 0x86, 0x48, 0x86, 0xf7, 0x0d, 0x01, 0x01, 0x01, 0x05, 0x00)
-        for ( var i = idx; i < idx+15; i++ ) {
+        for i in idx..<idx+15 {
             if ( keyAsArray[i] != seqiod[i-idx] ) {
                 return nil
             }
         }
         idx += 15
         
-        if (keyAsArray[idx++] != 0x03) {
+        if (keyAsArray[idx] != 0x03) {
             return nil
         }
+        idx += 1
+        
         if (keyAsArray[idx] > 0x80) {
             idx += Int(keyAsArray[idx]) - 0x80 + 1;
         } else {
-            idx++
+            idx += 1
         }
         
-        if (keyAsArray[idx++] != 0x00) {
+        if (keyAsArray[idx] != 0x00) {
             return nil
         }
+        idx += 1
 
         return pubkey.subdataWithRange(NSMakeRange(idx, keyAsArray.count - idx))
     }
@@ -178,12 +191,15 @@ public class RSAUtils: NSObject {
 
         //magic byte at offset 22, check if it's actually ASN.1
         var idx = 22
-        if ( keyAsArray[idx++] != 0x04 ) {
+        if ( keyAsArray[idx] != 0x04 ) {
             return nil
         }
+        idx += 1
+        
         //now we need to find out how long the key is, so we can extract the correct hunk
         //of bytes from the buffer.
-        var len = Int(keyAsArray[idx++])
+        var len = Int(keyAsArray[idx])
+        idx += 1
         let det = len & 0x80 //check if the high bit set
         if (det == 0) {
             //no? then the length of the key is a number that fits in one byte, (< 128)
@@ -200,8 +216,9 @@ public class RSAUtils: NSObject {
             idx += byteCount
             while (byteCount > 0) {
                 //after each byte, we shove it over, accumulating the value into accum
-                accum = (accum << 8) + UInt(keyAsArray[idx2++])
-                byteCount--
+                accum = (accum << 8) + UInt(keyAsArray[idx2])
+                idx2 += 1
+                byteCount -= 1
             }
             // now we have read all the bytes of the key length, and converted them to a number,
             // which is the number of bytes in the actual key.  we use this below to extract the
@@ -311,7 +328,7 @@ public class RSAUtils: NSObject {
     // privkeyBase64: RSA private key in base64 (data between "-----BEGIN RSA PRIVATE KEY-----" and "-----END RSA PRIVATE KEY-----")
     // NOT WORKING YET!
     static public func encryptWithRSAPrivateKey(data: NSData, privkeyBase64: String, keychainTag: String) -> NSData? {
-        let myKeychainTag = keychainTag + "-" + String(privkeyBase64.hashValue)
+        let myKeychainTag = keychainTag + (Config.useKeyHashes ? "-" + String(privkeyBase64.hashValue) : "")
         var keyRef = getRSAKeyFromKeychain(myKeychainTag)
         if ( keyRef == nil ) {
             keyRef = addRSAPrivateKey(privkeyBase64, tagName: myKeychainTag)
@@ -326,7 +343,7 @@ public class RSAUtils: NSObject {
     // Encrypt data with a RSA public key
     // pubkeyBase64: RSA public key in base64 (data between "-----BEGIN PUBLIC KEY-----" and "-----END PUBLIC KEY-----")
     static public func encryptWithRSAPublicKey(data: NSData, pubkeyBase64: String, keychainTag: String) -> NSData? {
-        let myKeychainTag = keychainTag + "-" + String(pubkeyBase64.hashValue)
+        let myKeychainTag = keychainTag + (Config.useKeyHashes ? "-" + String(pubkeyBase64.hashValue) : "")
         var keyRef = getRSAKeyFromKeychain(myKeychainTag)
         if ( keyRef == nil ) {
             keyRef = addRSAPublicKey(pubkeyBase64, tagName: myKeychainTag)
@@ -341,7 +358,7 @@ public class RSAUtils: NSObject {
     // Decrypt an encrypted data with a RSA private key
     // privkeyBase64: RSA private key in base64 (data between "-----BEGIN RSA PRIVATE KEY-----" and "-----END RSA PRIVATE KEY-----")
     static public func decryptWithRSAPrivateKey(encryptedData: NSData, privkeyBase64: String, keychainTag: String) -> NSData? {
-        let myKeychainTag = keychainTag + "-" + String(privkeyBase64.hashValue)
+        let myKeychainTag = keychainTag + (Config.useKeyHashes ? "-" + String(privkeyBase64.hashValue) : "")
         var keyRef = getRSAKeyFromKeychain(myKeychainTag)
         if ( keyRef == nil ) {
             keyRef = addRSAPrivateKey(privkeyBase64, tagName: myKeychainTag)
@@ -356,7 +373,7 @@ public class RSAUtils: NSObject {
     // Decrypt an encrypted data with a RSA public key
     // pubkeyBase64: RSA public key in base64 (data between "-----BEGIN PUBLIC KEY-----" and "-----END PUBLIC KEY-----")
     static public func decryptWithRSAPublicKey(encryptedData: NSData, pubkeyBase64: String, keychainTag: String) -> NSData? {
-        let myKeychainTag = keychainTag + "-" + String(pubkeyBase64.hashValue)
+        let myKeychainTag = keychainTag + (Config.useKeyHashes ? "-" + String(pubkeyBase64.hashValue) : "")
         var keyRef = getRSAKeyFromKeychain(myKeychainTag)
         if ( keyRef == nil ) {
             keyRef = addRSAPublicKey(pubkeyBase64, tagName: myKeychainTag)
