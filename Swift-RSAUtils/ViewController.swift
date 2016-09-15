@@ -48,7 +48,7 @@ class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        txtEncryptedTextPubKey.enabled = false
+        txtEncryptedTextPubKey.isEnabled = false
     }
 
     override func didReceiveMemoryWarning() {
@@ -62,44 +62,44 @@ class ViewController: UIViewController {
         let textToEncrypt = txtTextToEncrypt.text
         if ( textToEncrypt == nil || textToEncrypt == "" ) {
             txtEncryptedTextPubKey.text = "Please enter some text to encrypt"
-            txtEncryptedTextPubKey.textColor = UIColor.redColor()
+            txtEncryptedTextPubKey.textColor = UIColor.red
             return
         }
 
-        var encryptedData = RSAUtils.encryptWithRSAPublicKey(textToEncrypt!.dataUsingEncoding(NSUTF8StringEncoding)!, pubkeyBase64: PUBLIC_KEY, keychainTag: TAG_PUBLIC_KEY)
+        var encryptedData = RSAUtils.encryptWithRSAPublicKey(textToEncrypt!.data(using: String.Encoding.utf8)!, pubkeyBase64: PUBLIC_KEY, keychainTag: TAG_PUBLIC_KEY)
         if ( encryptedData == nil ) {
             txtEncryptedTextPubKey.text = "Error while encrypting"
-            txtEncryptedTextPubKey.textColor = UIColor.redColor()
+            txtEncryptedTextPubKey.textColor = UIColor.red
         } else {
-            let encryptedDataText = encryptedData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions())
+            let encryptedDataText = encryptedData!.base64EncodedString(options: NSData.Base64EncodingOptions())
             NSLog("Encrypted with pubkey: %@", encryptedDataText)
             txtEncryptedTextPubKey.text = encryptedDataText
-            txtEncryptedTextPubKey.textColor = UIColor.blueColor()
+            txtEncryptedTextPubKey.textColor = UIColor.blue
         }
 
-        encryptedData = RSAUtils.encryptWithRSAPrivateKey(textToEncrypt!.dataUsingEncoding(NSUTF8StringEncoding)!, privkeyBase64: PRIVATE_KEY, keychainTag: TAG_PRIVATE_KEY)
+        encryptedData = RSAUtils.encryptWithRSAPrivateKey(textToEncrypt!.data(using: String.Encoding.utf8)!, privkeyBase64: PRIVATE_KEY, keychainTag: TAG_PRIVATE_KEY)
         if ( encryptedData == nil ) {
         } else {
-            let encryptedDataText = encryptedData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions())
+            let encryptedDataText = encryptedData!.base64EncodedString(options: NSData.Base64EncodingOptions())
             NSLog("Encrypted with privkey: %@", encryptedDataText)
         }
 
         var ENCRYPTED_DATA = DATA_ENCRYPTED_WITH_PRIVATE_KEY
-        encryptedData = NSData(base64EncodedString: ENCRYPTED_DATA, options: NSDataBase64DecodingOptions())
+        encryptedData = Data(base64Encoded: ENCRYPTED_DATA, options: NSData.Base64DecodingOptions())
         var decryptedData = RSAUtils.decryptWithRSAPublicKey(encryptedData!, pubkeyBase64: PUBLIC_KEY, keychainTag: TAG_PUBLIC_KEY)
         if ( decryptedData != nil ) {
-            let decryptedString = NSString(data: decryptedData!, encoding:NSUTF8StringEncoding)
-            NSLog("Data encrypted with privateKey: %@\nAfter decrypted with publicKey: %@", ENCRYPTED_DATA, decryptedString!);
+            //let decryptedString = NSString(decryptedData!)
+            //NSLogv("Data encrypted with privateKey: %@\nAfter decrypted with publicKey: %@", ENCRYPTED_DATA, decryptedString!);
         } else {
             NSLog("Error while decrypt string: %@\nusing publicKey: %@", ENCRYPTED_DATA, PUBLIC_KEY)
         }
 
         ENCRYPTED_DATA = DATA_ENCRYPTED_WITH_PUBLIC_KEY
-        encryptedData = NSData(base64EncodedString: ENCRYPTED_DATA, options: NSDataBase64DecodingOptions())
+        encryptedData = Data(base64Encoded: ENCRYPTED_DATA, options: NSData.Base64DecodingOptions())
         decryptedData = RSAUtils.decryptWithRSAPrivateKey(encryptedData!, privkeyBase64: PRIVATE_KEY, keychainTag: TAG_PRIVATE_KEY)
         if ( decryptedData != nil ) {
-            let decryptedString = NSString(data: decryptedData!, encoding:NSUTF8StringEncoding)
-            NSLog("Data encrypted with publicKey: %@\nAfter decrypted with privateKey: %@", ENCRYPTED_DATA, decryptedString!);
+            //let decryptedString = NSString(data: decryptedData!, encoding:String.Encoding.utf8)
+            //NSLog("Data encrypted with publicKey: %@\nAfter decrypted with privateKey: %@", ENCRYPTED_DATA, decryptedString!);
         } else {
             NSLog("Error while decrypt string: %@\nusing privateKey: %@", ENCRYPTED_DATA, PRIVATE_KEY)
         }
