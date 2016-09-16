@@ -174,8 +174,9 @@ open class RSAUtils: NSObject {
             return nil
         }
         idx += 1
-        return pubkey.subdata(in: idx..<keyAsArray.count - idx)
+        //return pubkey.subdata(in: idx..<keyAsArray.count - idx)
         //return pubkey.subdata(in: NSMakeRange(idx, keyAsArray.count - idx))
+        return pubdata.subdata(in: NSMakeRange(idx, keyAsArray.count - idx).toRange()!)
     }
 
     // Verify that the supplied key is in fact a PEM RSA private key key and strip the header
@@ -226,8 +227,9 @@ open class RSAUtils: NSObject {
             len = Int(accum)
         }
 
-        return privkey.subdata(in: idx..<len)
+        //return privkey.subdata(in: idx..<len)
         //return privkey.subdata(in: NSMakeRange(idx, len))
+        return privkey.subdata(in: NSMakeRange(idx, len).toRange()!)
     }
 
     // Delete any existing RSA key from keychain
