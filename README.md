@@ -3,7 +3,7 @@ Swift-RSAUtils
 
 RSA encryption and decryption with Swift iOS.
 
-_Note: encryption with private key is currently not working!_
+## This project has been migrated to new home at [https://github.com/btnguyen2k/swiftutils](https://github.com/btnguyen2k/swiftutils). This repository is no longer maintained! ##
 
 ### This project is to solve the following problems (actually mine) ###
 
