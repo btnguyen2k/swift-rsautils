@@ -176,7 +176,7 @@ open class RSAUtils: NSObject {
         idx += 1
         //return pubkey.subdata(in: idx..<keyAsArray.count - idx)
         //return pubkey.subdata(in: NSMakeRange(idx, keyAsArray.count - idx))
-        return pubdata.subdata(in: NSMakeRange(idx, keyAsArray.count - idx).toRange()!)
+        return pubkey.subdata(in: NSMakeRange(idx, keyAsArray.count - idx).toRange()!)
     }
 
     // Verify that the supplied key is in fact a PEM RSA private key key and strip the header
